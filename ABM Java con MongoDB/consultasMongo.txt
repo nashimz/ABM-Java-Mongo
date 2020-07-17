@@ -1,0 +1,82 @@
+// CONSULTAS
+1-Detalle de ventas entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-06")}}}]).pretty()
+
+2-Total de ventas entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-06")}}},
+		       {$group: {_id:null,"total":{$sum:"$total"}}}]).pretty()
+
+3-Detalle de ventas entre fechas por sucursal
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-06")}}},
+		       {$match:{ sucursal:"Pepe"}}]).pretty()
+
+4-Total de ventas entre fechas por sucursal
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-06")}}},
+		       {$match:{ sucursal:"Pepe"}}, 
+		       {$group: {_id:null,"total":{$sum:"$total"}}}]).pretty()
+
+5-Detalle de ventas entre fechas por ObraSocial o Privado
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}},
+		       {$match: {obraSocial:"Privado"}}]).pretty()
+
+6-Total de ventas entre fechas por ObraSocial o Privado
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}},
+		       {$match: {obraSocial:"Privado"}},
+		       {$group: {_id:null,"total":{$sum:"$total"}}}]).pretty()
+
+7-Detalle de ventas entre fechas por ObraSocial o Privado por sucursal
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}},
+		       {$match:{ sucursal:"Pepe"}},
+		       {$match: {obraSocial:"Privado"}}]).pretty()
+
+8-Total de ventas entre fechas por ObraSocial o Privado por sucursal
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}},
+		       {$match:{ sucursal:"Pepe"}},
+		       {$match: {obraSocial:"Privado"}},
+		       {$group: {_id:null,"total":{$sum:"$total"}}}]).pretty()
+
+9-Detalle de ventas de productos en la cadena entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-26")}}},
+		       {$match: {producto:"DBI"}}]).pretty()
+
+10-Total de ventas de productos en la cadena entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-26")}}},
+		       {$match: {producto:"DBI"}},
+		       {$group:{_id:null,"total":{$sum: "$total"}}}]).pretty()
+
+11-Detalle de ventas de productos por sucursal entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-26")}}},
+		       {$match: {producto:"DBI"}},
+		       {$match:{sucursal:"Pepe"}}]).pretty()
+
+12-Total de ventas de productos por sucursal entre fechas
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}}, 
+		       {$match: {fecha:{$lte:ISODate("2020-01-26")}}},
+		       {$match: {producto:"DBI"}},
+		       {$match:{sucursal:"Kenia"}},
+		       {$group:{_id:null,"total":{$sum: "$total"}}}]).pretty()
+
+13-Ranking de ventas de productos en la cadena, entre fechas por cantidad vendida
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}},
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}}, 
+		       {$group:{_id: {"producto" : "$producto"},"cantidad" : {$sum : "$cantidad"}}},
+		       {$sort: {cantidad:-1}}])
+
+14-Ranking de ventas de productos por sucursal, entre fechas por cantidad vendida
+db.Ticket.aggregate ([ {$match: {fecha:{$gte:ISODate("2020-01-01")}}},
+		       {$match: {fecha:{$lte:ISODate("2020-01-25")}}},
+		       {$match:{sucursal:"Pepe"}}, 
+		       {$group:{_id: {"producto" : "$producto"},"cantidad" : {$sum : "$cantidad"}}},
+		       {$sort: {cantidad:-1}}])
+
